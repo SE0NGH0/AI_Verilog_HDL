@@ -1,0 +1,11 @@
+# 시뮬레이션 및 분석 결과 무시 
+*.wdb
+*.jou
+*.log
+*.pb
+*.str
+*.xml
+*.xsim/
+*.sim/
+*.runs/
+*.zip
