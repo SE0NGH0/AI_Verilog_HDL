@@ -1,4 +1,4 @@
-# 🔧 Verilog Microwave Oven System  
+# :oven:  Verilog Microwave Oven System  
 
 Basys3 FPGA 기반의 Verilog HDL 프로젝트로, 실생활 전자레인지의 핵심 기능을 디지털 회로로 구현하였습니다.
 
