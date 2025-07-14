@@ -1,4 +1,4 @@
-# <img width="512" height="512" alt="oven" src="https://github.com/user-attachments/assets/16a6bf9d-d54f-4080-b7b1-4d1d6054fab6" /> Verilog Microwave Oven System  
+# 🔧 Verilog Microwave Oven System  
 
 Basys3 FPGA 기반의 Verilog HDL 프로젝트로, 실생활 전자레인지의 핵심 기능을 디지털 회로로 구현하였습니다.
 
