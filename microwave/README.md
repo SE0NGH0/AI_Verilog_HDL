@@ -2,10 +2,6 @@
 
 Basys3 FPGA 기반의 Verilog HDL 프로젝트로, 실생활 전자레인지의 핵심 기능을 디지털 회로로 구현하였습니다.
 
-![FPGA](https://img.shields.io/badge/Platform-Basys3-blue?style=for-the-badge&logo=xilinx)
-![Verilog](https://img.shields.io/badge/Language-Verilog%20HDL-critical?style=for-the-badge&logo=verilog)
-![PWM](https://img.shields.io/badge/Motor-Control-lightgrey?style=for-the-badge)
-
 ---
 
 ## 📌 프로젝트 개요
