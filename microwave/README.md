@@ -44,12 +44,13 @@ Basys3 FPGA 기반의 Verilog HDL 프로젝트로, 실생활 전자레인지의 
 
 ```mermaid
 stateDiagram-v2
-    [*] --> IDLE
+    [*] --> CIRCLE
+    CIRCLE --> IDLE: sw0 == 1
     IDLE --> SET_TIME: btn_U or btn_D
     SET_TIME --> RUNNING: btn_run
     RUNNING --> DONE: timer done
     RUNNING --> IDLE: btn_D (cancel)
-    DONE --> IDLE: after 3 blinks
+    DONE --> IDLE
 ```
 
 ---
