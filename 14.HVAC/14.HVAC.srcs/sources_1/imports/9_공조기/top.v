@@ -33,13 +33,40 @@ module top (
     );
 
     // === Button Debounce ===
-    wire mode_btn_clean;
-    button_debounce u_debounce (
+    wire btn0_clean;
+    button_debounce u_debounce0 (
         .i_clk(clk),
         .i_reset(reset),
         .i_btn(btn[0]),
         .led(),
-        .o_btn_clean(mode_btn_clean)
+        .o_btn_clean(btn0_clean)
+    );
+
+    wire btn1_clean;
+    button_debounce u_debounce1 (
+        .i_clk(clk),
+        .i_reset(reset),
+        .i_btn(btn[1]),
+        .led(),
+        .o_btn_clean(btn1_clean)
+    );
+
+    wire btn2_clean;
+    button_debounce u_debounce2 (
+        .i_clk(clk),
+        .i_reset(reset),
+        .i_btn(btn[2]),
+        .led(),
+        .o_btn_clean(btn2_clean)
+    );
+
+    wire btn3_clean;
+    button_debounce u_debounce3 (
+        .i_clk(clk),
+        .i_reset(reset),
+        .i_btn(btn[3]),
+        .led(),
+        .o_btn_clean(btn3_clean)
     );
 
     // === Mode Selector ===
@@ -49,7 +76,7 @@ module top (
     ) u_mode_selector (
         .clk(clk),
         .reset(reset),
-        .btn_clean(mode_btn_clean),
+        .btn_clean(btn0_clean),
         .mode(mode)
     );
 
@@ -59,7 +86,7 @@ module top (
     hcsr04 u_hcsr04 (
         .clk(clk),
         .reset(reset),
-        .start((mode == MODE_ULTRA) ? tick_1Hz : 1'b0),
+        .start(tick_1Hz),
         .trig(trig),
         .echo(echo),
         .distance_cm(distance_cm),
@@ -130,7 +157,7 @@ module top (
         .buzzer_out(buzzer_out_raw)
     );
 
-    assign buzzer = (mode != MODE_IDLE) ? buzzer_out_raw : 1'b0;
+    assign buzzer = (distance_cm <= 14'd5) ? 1'b1 : 1'b0;
 
     // === FND ===
     wire [7:0] seg_ultra, seg_idle, seg_temp;
@@ -170,11 +197,13 @@ module top (
 
     // == DC motor(정회전) ===
     wire [1:0] dc_motor_state = 2'b10;  // RUN 상태로 고정
-
+    wire motor_enable;
+    assign motor_enable = (latched_distance <= 14'd5) ? 1'b0 : 1'b1;
 
     pwm_dcmotor u_dc_motor (
         .clk(clk),
         .temperature(w_dht11_temp / 100),  // 상위 8비트 사용
+        .enable(motor_enable),             // 거리 조건에 따라 동작 여부 결정
         .PWM_OUT(PWM_OUT),         // PWM 출력 (Vivado XDC에선 J3)
         .in1_in2(in1_in2)        // 방향 신호 (L3, M2)
     );
