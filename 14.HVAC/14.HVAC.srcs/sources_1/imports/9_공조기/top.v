@@ -4,7 +4,7 @@ module top (
     input wire clk,
     input wire reset,
     input wire echo,
-    input wire [2:0] btn,
+    input wire [3:0] btn,
     input [14:0] sw,
     output wire trig,
     output wire RsTx,
@@ -65,12 +65,13 @@ module top (
         .i_clk(clk),
         .i_reset(reset),
         .i_btn(btn[3]),
-        .led(),
+        .led(led[6]),
         .o_btn_clean(btn3_clean)
     );
 
     // 수동 온도 설정 모듈
-    wire [7:0] temp_manual, temp_applied;
+    wire [13:0] temp_manual;
+    wire [13:0] temp_applied;
 
     manual_temp_controller u_temp_manual_ctrl (
         .clk(clk),
@@ -174,7 +175,7 @@ module top (
     assign buzzer = (distance_cm <= 14'd5) ? 1'b1 : 1'b0;
 
     // === FND ===
-    wire [13:0] display_value = (sw[1]) ? {temp_manual * 14'd100} :
+    wire [13:0] display_value = (sw[1]) ? temp_manual :
                                 (mode == MODE_ULTRA) ? latched_distance :
                                 (mode == MODE_TEMP_HUMI) ? ((sw[0]) ? w_dht11_humid : w_dht11_temp) :
                                 14'd0;
@@ -201,10 +202,13 @@ module top (
 
     pwm_dcmotor u_dc_motor (
         .clk(clk),
-        .temperature(w_dht11_temp / 100),  // 상위 8비트 사용
-        .enable(motor_enable),             // 거리 조건에 따라 동작 여부 결정
-        .PWM_OUT(PWM_OUT),         // PWM 출력 (Vivado XDC에선 J3)
-        .in1_in2(in1_in2)        // 방향 신호 (L3, M2)
+        .enable(motor_enable),
+        .measured_temp(w_dht11_temp),
+        .target_temp(temp_applied),
+        .manual_mode(sw[1]),
+        .PWM_OUT(PWM_OUT),
+        .d_led(led[7]),
+        .in1_in2(in1_in2)
     );
 
     assign led[15:8] = w_dht11_temp / 100;

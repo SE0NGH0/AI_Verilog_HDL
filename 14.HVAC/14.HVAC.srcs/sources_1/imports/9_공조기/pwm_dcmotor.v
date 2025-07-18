@@ -1,26 +1,60 @@
 `timescale 1ns / 1ps
 
 module pwm_dcmotor (
-    input wire clk,                  
-    input wire [7:0] temperature,    
-    input wire enable,               // <== 모터 동작 제어
-    output wire PWM_OUT,            
-    output wire [1:0] in1_in2       
+    input wire clk,
+    input wire enable,
+    input wire [13:0] measured_temp,   // DHT11 온도 값 (w_dht11_temp / 100)
+    input wire [13:0] target_temp,     // 수동 설정 온도 값 (temp_applied)
+    input wire manual_mode,           // sw[1] (1: 수동 / 0: 자동)
+    output wire PWM_OUT,
+    output reg d_led,
+    output reg [1:0] in1_in2
 );
 
-    wire [3:0] duty_cycle;
+    localparam AUTO_TARGET = 14'd2700;
 
-    // 온도에 따라 duty cycle 결정
-    assign duty_cycle = (temperature < 8'd26) ? 4'd5 :
-                        (temperature == 8'd26) ? 4'd7 :
-                        4'd9;
+    reg [9:0] duty_cycle;
+    reg [9:0] pwm_counter = 0;
 
-    pwm_duty_cycle_control u_pwm_duty_control (
-        .clk(clk),
-        .duty_cycle(enable ? duty_cycle : 4'd0), // <= enable이 0이면 0% 출력
-        .PWM_OUT(PWM_OUT)
-    );
+    // 방향: 항상 정회전
+    always @(posedge clk) begin
+        in1_in2 <= 2'b10;
+    end
 
-    assign in1_in2 = (enable) ? 2'b10 : 2'b00;  // enable==0일 때 정지
+    // 온도 비교에 따라 duty cycle 결정
+    always @(posedge clk) begin
+        if (!enable) begin
+            duty_cycle <= 0;
+        end else if (manual_mode) begin
+            // 수동모드: target_temp와 비교
+            if (measured_temp > target_temp) begin
+                duty_cycle <= 10'd900;  // 강하게
+                d_led <= 1'b1;
+            end
+            else begin // if (measured_temp > target_temp) begin
+                duty_cycle <= 10'd500;  // 약하게
+                // d_led <= 2'b10;
+            end
+        end else begin
+            // 자동모드: 현재 온도 기준
+            if (measured_temp < AUTO_TARGET)
+                duty_cycle <= 10'd500;  // 약하게
+            else if (measured_temp > AUTO_TARGET)
+                duty_cycle <= 10'd900;  // 강하게
+        end
+    end
+
+    // PWM 생성
+    reg pwm_out_reg;
+    always @(posedge clk) begin
+        if (pwm_counter >= 10'd999)
+            pwm_counter <= 10'd0;
+        else
+            pwm_counter <= pwm_counter + 1;
+
+        pwm_out_reg <= (pwm_counter < duty_cycle);
+    end
+
+    assign PWM_OUT = pwm_out_reg;
 
 endmodule
