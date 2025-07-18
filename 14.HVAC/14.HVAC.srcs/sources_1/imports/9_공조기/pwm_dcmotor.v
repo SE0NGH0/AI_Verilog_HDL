@@ -11,8 +11,8 @@ module pwm_dcmotor (
     wire [3:0] duty_cycle;
 
     // 온도에 따라 duty cycle 결정
-    assign duty_cycle = (temperature < 8'd26) ? 4'd4 :
-                        (temperature == 8'd26) ? 4'd6 :
+    assign duty_cycle = (temperature < 8'd26) ? 4'd5 :
+                        (temperature == 8'd26) ? 4'd7 :
                         4'd9;
 
     pwm_duty_cycle_control u_pwm_duty_control (

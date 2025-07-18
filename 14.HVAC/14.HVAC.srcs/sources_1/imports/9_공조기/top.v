@@ -69,6 +69,20 @@ module top (
         .o_btn_clean(btn3_clean)
     );
 
+    // 수동 온도 설정 모듈
+    wire [7:0] temp_manual, temp_applied;
+
+    manual_temp_controller u_temp_manual_ctrl (
+        .clk(clk),
+        .reset(reset),
+        .enable(sw[1]),
+        .btn_inc(btn1_clean),
+        .btn_dec(btn2_clean),
+        .btn_set(btn3_clean),
+        .temp_manual(temp_manual),
+        .temp_applied(temp_applied)
+    );
+
     // === Mode Selector ===
     wire [1:0] mode;
     mode_selector #(
@@ -160,45 +174,30 @@ module top (
     assign buzzer = (distance_cm <= 14'd5) ? 1'b1 : 1'b0;
 
     // === FND ===
-    wire [7:0] seg_ultra, seg_idle, seg_temp;
-    wire [3:0] an_ultra, an_idle, an_temp;
+    wire [13:0] display_value = (sw[1]) ? {temp_manual * 14'd100} :
+                                (mode == MODE_ULTRA) ? latched_distance :
+                                (mode == MODE_TEMP_HUMI) ? ((sw[0]) ? w_dht11_humid : w_dht11_temp) :
+                                14'd0;
 
-    fnd_controller u_fnd_ultra (
-        .clk(clk),
-        .reset(reset),
-        .input_data(latched_distance),
-        .seg_data(seg_ultra),
-        .an(an_ultra)
-    );
+    wire [7:0] seg_main;
+    wire [3:0] an_main;
+    wire [7:0] seg_idle;
+    wire [3:0] an_idle;
 
-    wire [13:0] fnd_display_data;
-    assign fnd_display_data = (sw[0]) ? w_dht11_humid : w_dht11_temp;
-
-    fnd_controller u_fnd_controller (
-        .clk(clk),
-        .reset(reset),
-        .input_data(fnd_display_data),
-        .an(an_temp),
-        .seg_data(seg_temp)
+    fnd_controller u_fnd_main (
+        .clk(clk), .reset(reset), .input_data(display_value), .seg_data(seg_main), .an(an_main)
     );
 
     fnd_rotate u_fnd_idle (
-        .clk(clk),
-        .reset(reset),
-        .seg(seg_idle),
-        .an(an_idle)
+        .clk(clk), .reset(reset), .seg(seg_idle), .an(an_idle)
     );
 
-    assign seg = (mode == MODE_ULTRA)     ? seg_ultra :
-                 (mode == MODE_TEMP_HUMI) ? seg_temp  : seg_idle;
-
-    assign an  = (mode == MODE_ULTRA)     ? an_ultra  :
-                 (mode == MODE_TEMP_HUMI) ? an_temp   : an_idle;
+    assign seg = (mode == MODE_IDLE && ~sw[1]) ? seg_idle : seg_main;
+    assign an  = (mode == MODE_IDLE && ~sw[1]) ? an_idle  : an_main;
 
     // == DC motor(정회전) ===
     wire [1:0] dc_motor_state = 2'b10;  // RUN 상태로 고정
-    wire motor_enable;
-    assign motor_enable = (latched_distance <= 14'd5) ? 1'b0 : 1'b1;
+    wire motor_enable = (latched_distance <= 14'd5) ? 1'b0 : 1'b1;
 
     pwm_dcmotor u_dc_motor (
         .clk(clk),
