@@ -60,15 +60,6 @@ module top (
         .o_btn_clean(btn2_clean)
     );
 
-    wire btn3_clean;
-    button_debounce u_debounce3 (
-        .i_clk(clk),
-        .i_reset(reset),
-        .i_btn(btn[3]),
-        .led(led[6]),
-        .o_btn_clean(btn3_clean)
-    );
-
     // 수동 온도 설정 모듈
     wire [13:0] temp_manual;
     wire [13:0] temp_applied;
@@ -79,7 +70,6 @@ module top (
         .enable(sw[1]),
         .btn_inc(btn1_clean),
         .btn_dec(btn2_clean),
-        .btn_set(btn3_clean),
         .temp_manual(temp_manual),
         .temp_applied(temp_applied)
     );
