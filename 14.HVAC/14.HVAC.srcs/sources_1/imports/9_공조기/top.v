@@ -160,8 +160,39 @@ module top (
 
     assign w_seg_data = (sw[0]) ?  w_dht11_humid : w_dht11_temp;
 
+    // === DHT11 UART data sender ===
+    wire tx_start_dht;
+    wire [7:0] tx_data_dht;
+    wire tx_done_dht, tx_busy_dht;
+    wire RsTx_dht;
+
+    dht11_data_sender u_data_sender_dht (
+        .clk(clk),
+        .reset(reset),
+        .temperature(w_dht11_temp),
+        .humidity(w_dht11_humid),
+        .start_trigger((mode == MODE_TEMP_HUMI) ? tick_1Hz : 1'b0),
+        .tx_start(tx_start_dht),
+        .tx_data(tx_data_dht),
+        .tx_done(tx_done_dht),
+        .tx_busy(tx_busy_dht)
+    );
+
+    uart_tx u_uart_tx_dht (
+        .clk(clk),
+        .reset(reset),
+        .tx_start(tx_start_dht),
+        .tx_data(tx_data_dht),
+        .tx_done(tx_done_dht),
+        .tx(RsTx_dht),
+        .tx_busy(tx_busy_dht)
+    );
+
     // === RsTx MUX ===
-    assign RsTx = (mode == MODE_ULTRA) ? RsTx_ultra : 1'b1;
+    // assign RsTx = (mode == MODE_ULTRA) ? RsTx_ultra : 1'b1;
+    assign RsTx = (mode == MODE_ULTRA) ? RsTx_ultra :
+                  (mode == MODE_TEMP_HUMI) ? RsTx_dht : 1'b1;
+
 
     // === Buzzer ===
     wire buzzer_out_raw;
