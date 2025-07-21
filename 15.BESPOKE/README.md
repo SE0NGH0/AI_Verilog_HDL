@@ -96,6 +96,18 @@ stateDiagram-v2
     [*] --> IDLE
     IDLE --> READ_DISTANCE: tick_1Hz
     READ_DISTANCE --> DISABLE_MOTOR: distance < 5cm
+    READ_DISTANCE --> EVALUATE_TEMP: distance >= 5cm
+    EVALUATE_TEMP --> MANUAL_CONTROL: sw[1] == 1
+    EVALUATE_TEMP --> AUTO_CONTROL: sw[1] == 0
+    MANUAL_CONTROL --> APPLY_TARGET_TEMP: 버튼 설정
+    APPLY_TARGET_TEMP --> SET_PWM: temp_applied 기준 제어
+    AUTO_CONTROL --> SET_PWM: 측정된 온도 기준 자동 제어
+    SET_PWM --> IDLE
+    DISABLE_MOTOR --> IDLEmermaid
+stateDiagram-v2
+    [*] --> IDLE
+    IDLE --> READ_DISTANCE: tick_1Hz
+    READ_DISTANCE --> DISABLE_MOTOR: distance < 5cm
     READ_DISTANCE --> READ_TEMPERATURE: distance >= 5cm
     READ_TEMPERATURE --> MANUAL_CONTROL: sw[1] == 1
     READ_TEMPERATURE --> AUTO_CONTROL: sw[1] == 0
