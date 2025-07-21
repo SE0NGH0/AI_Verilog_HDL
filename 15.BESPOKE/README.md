@@ -98,7 +98,7 @@ stateDiagram-v2
     Temp/Humi --> READ_DISTANCE: tick_1Hz
     Temp/Humi --> READ_TEMPERATURE: tick_1Hz
     READ_DISTANCE --> DISABLE_MOTOR: distance <= 5cm
-    READ_DISTANCE --> Temp/Humi: distance > 5cm
+    READ_DISTANCE --> SET_PWM: distance > 5cm
     READ_TEMPERATURE --> EVALUATE_TEMP
     EVALUATE_TEMP --> MANUAL_CONTROL: btnL (mode change) / sw[1] == 1
     MANUAL_CONTROL --> APPLY_TARGET_TEMP: btnU(Temp↑) / btnD(Temp↓)
@@ -106,7 +106,7 @@ stateDiagram-v2
     EVALUATE_TEMP --> AUTO_CONTROL: sw[1] == 0
     AUTO_CONTROL --> SET_PWM: 측정된 온도 기준 자동 제어
     SET_PWM --> Temp/Humi
-    DISABLE_MOTOR --> Temp/Humi
+    DISABLE_MOTOR --> SET_PWM
 ```
 
 ### 🔥 전자레인지 FSM
