@@ -96,7 +96,7 @@ stateDiagram-v2
     [*] --> IDLE
     IDLE --> Temp/Humi: btnL (mode change)
     Temp/Humi --> READ_DISTANCE: tick_1Hz
-    Temp/Humi --> READ_TEMPERATURE: btnL (manual trigger) / tick_1Hz
+    Temp/Humi --> READ_TEMPERATURE: btnL (mode change) / tick_1Hz
     READ_DISTANCE --> DISABLE_MOTOR: distance <= 5cm
     READ_DISTANCE --> Temp/Humi: distance > 5cm
     READ_TEMPERATURE --> EVALUATE_TEMP
