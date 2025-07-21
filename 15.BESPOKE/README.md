@@ -101,7 +101,6 @@ stateDiagram-v2
     READ_DISTANCE --> Temp/Humi: distance > 5cm
     READ_TEMPERATURE --> EVALUATE_TEMP
     EVALUATE_TEMP --> MANUAL_CONTROL: btnL (mode change) / sw[1] == 1
-    AUTO_CONTROL --> SET_PWM
     MANUAL_CONTROL --> APPLY_TARGET_TEMP: btnU(Temp↑) / btnD(Temp↓)
     APPLY_TARGET_TEMP --> SET_PWM: temp_applied 기준 제어
     EVALUATE_TEMP --> AUTO_CONTROL: sw[1] == 0
