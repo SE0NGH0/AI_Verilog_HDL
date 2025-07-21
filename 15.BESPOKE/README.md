@@ -94,10 +94,11 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE
-    IDLE --> READ_TEMPERATURE: btnL (manual trigger)
     IDLE --> READ_DISTANCE: tick_1Hz
+    IDLE --> READ_TEMPERATURE: btnL (manual trigger)
     READ_DISTANCE --> DISABLE_MOTOR: distance < 5cm
-    READ_DISTANCE --> EVALUATE_TEMP: distance >= 5cm
+    READ_DISTANCE --> IDLE: distance >= 5cm
+    READ_TEMPERATURE --> EVALUATE_TEMP
     EVALUATE_TEMP --> MANUAL_CONTROL: sw[1] == 1
     EVALUATE_TEMP --> AUTO_CONTROL: sw[1] == 0
     MANUAL_CONTROL --> APPLY_TARGET_TEMP: 버튼 설정
