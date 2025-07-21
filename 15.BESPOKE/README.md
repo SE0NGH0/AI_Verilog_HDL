@@ -89,6 +89,23 @@ stateDiagram-v2
     DONE --> WAIT: latch value, wait for next tick
 ```
 
+### 🌬️ 공조기 FSM (HVAC 제어)
+
+```mermaid
+stateDiagram-v2
+    [*] --> IDLE
+    IDLE --> READ_DISTANCE: tick_1Hz
+    READ_DISTANCE --> DISABLE_MOTOR: distance < 5cm
+    READ_DISTANCE --> READ_TEMPERATURE: distance >= 5cm
+    READ_TEMPERATURE --> MANUAL_CONTROL: sw[1] == 1
+    READ_TEMPERATURE --> AUTO_CONTROL: sw[1] == 0
+    MANUAL_CONTROL --> APPLY_TARGET_TEMP: btn1/2/3 설정
+    APPLY_TARGET_TEMP --> SET_PWM: 온도 비교 후 세기 설정
+    AUTO_CONTROL --> SET_PWM: 측정 온도 기반 세기 자동 조절
+    SET_PWM --> IDLE
+    DISABLE_MOTOR --> IDLE
+```
+
 ### 🔥 전자레인지 FSM
 
 ```mermaid
