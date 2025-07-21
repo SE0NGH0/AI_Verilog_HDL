@@ -96,13 +96,13 @@ stateDiagram-v2
     [*] --> IDLE
     IDLE --> Temp/Humi: btnL (mode change)
     Temp/Humi --> READ_DISTANCE: tick_1Hz
-    Temp/Humi --> Auto_Control: btnL (mode change)
-    Auto_Control --> READ_TEMPERATURE: tick_1Hz
+    Temp/Humi --> READ_TEMPERATURE: tick_1Hz
     READ_DISTANCE --> DISABLE_MOTOR: distance <= 5cm
     READ_DISTANCE --> Temp/Humi: distance > 5cm
     READ_TEMPERATURE --> EVALUATE_TEMP
-    EVALUATE_TEMP --> MANUAL_CONTROL: sw[1] == 1
     EVALUATE_TEMP --> AUTO_CONTROL: sw[1] == 0
+    EVALUATE_TEMP --> MANUAL_CONTROL: btnL (mode change) / sw[1] == 1
+    AUTO_CONTROL --> SET_PWM
     MANUAL_CONTROL --> APPLY_TARGET_TEMP: btnU(Temp↑) / btnD(Temp↓)
     APPLY_TARGET_TEMP --> SET_PWM: temp_applied 기준 제어
     AUTO_CONTROL --> SET_PWM: 측정된 온도 기준 자동 제어
