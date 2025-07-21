@@ -127,7 +127,7 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE
-    IDLE --> IDLE: btnD (circle animation speed control)
+    IDLE --> IDLE: btnD (circle speed control)
     IDLE --> MINSEC_WATCH: btnR
     MINSEC_WATCH --> STOPWATCH: btnR
     STOPWATCH --> IDLE: btnR
