@@ -134,7 +134,6 @@ stateDiagram-v2
     STOPWATCH --> PAUSED: btnC (pause)
     PAUSED --> STOPWATCH: btnC (resume)
     STOPWATCH --> STOPWATCH: tick_1Hz (count up)
-    PAUSED --> PAUSED: no button
     STOPWATCH --> RESET: btnU (reset time)
     RESET --> STOPWATCH
 ```
