@@ -125,10 +125,10 @@ stateDiagram-v2
 
 ```mermaid
 stateDiagram-v2
-    [*] --> RESET
-    RESET --> RUNNING: btn_start
-    RUNNING --> STOPPED: btn_stop
-    STOPPED --> RESET: btn_reset
+    [*] --> IDLE
+    IDLE --> MINSEC_WATCH: btn[1]
+    MINSEC_WATCH --> STOPWATCH: btn[2]
+    STOPWATCH --> IDLE: btn[3]
 ```
 
 ---
