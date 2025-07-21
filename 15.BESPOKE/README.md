@@ -103,7 +103,7 @@ stateDiagram-v2
     EVALUATE_TEMP --> MANUAL_CONTROL: btnL (mode change)
     MANUAL_CONTROL --> APPLY_TARGET_TEMP: sw[1] == 1 / btnU(Temp↑), btnD(Temp↓)
     APPLY_TARGET_TEMP --> SET_PWM: temp_applied 기준 제어
-    AUTO_CONTROL --> SET_PWM: 측정된 온도 기준 자동 제어
+    EVALUATE_TEMP --> SET_PWM: 측정된 온도 기준 자동 제어
     DISABLE_MOTOR --> SET_PWM
 ```
 
