@@ -94,7 +94,7 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE
-    IDLE --> AUTO_CONTROL: btnL (mode change) / sw[1] == 0
+    IDLE --> AUTO_CONTROL: btnL (mode change)
     AUTO_CONTROL --> READ_DISTANCE: tick_1Hz
     AUTO_CONTROL --> READ_TEMPERATURE: tick_1Hz
     READ_DISTANCE --> DISABLE_MOTOR: distance <= 5cm
