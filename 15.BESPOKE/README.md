@@ -131,8 +131,7 @@ stateDiagram-v2
     IDLE --> MINSEC_WATCH: btnR
     MINSEC_WATCH --> STOPWATCH: btnR
     STOPWATCH --> IDLE: btnR
-    STOPWATCH --> PAUSED: btnC (pause)
-    PAUSED --> STOPWATCH: btnC (resume)
+    STOPWATCH --> STOPWATCH: btnC (pause / resume)
     STOPWATCH --> STOPWATCH: tick_1Hz (count up)
     STOPWATCH --> STOPWATCH: btnU (reset time)
 ```
