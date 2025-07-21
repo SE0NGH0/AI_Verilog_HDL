@@ -93,7 +93,8 @@ stateDiagram-v2
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Temp/Humi
+    [*] --> IDLE
+    IDLE --> Temp/Humi
     Temp/Humi --> READ_DISTANCE: tick_1Hz
     Temp/Humi --> READ_TEMPERATURE: btnL (manual trigger)
     READ_DISTANCE --> DISABLE_MOTOR: distance <= 5cm
