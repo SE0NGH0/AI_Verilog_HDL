@@ -101,7 +101,7 @@ stateDiagram-v2
     READ_TEMPERATURE --> EVALUATE_TEMP
     EVALUATE_TEMP --> MANUAL_CONTROL: sw[1] == 1
     EVALUATE_TEMP --> AUTO_CONTROL: sw[1] == 0
-    MANUAL_CONTROL --> APPLY_TARGET_TEMP: btnU(증가)/btnD(감소)
+    MANUAL_CONTROL --> APPLY_TARGET_TEMP: btnU(희망온도증가) / btnD(희망온도감소)
     APPLY_TARGET_TEMP --> SET_PWM: temp_applied 기준 제어
     AUTO_CONTROL --> SET_PWM: 측정된 온도 기준 자동 제어
     SET_PWM --> IDLE
