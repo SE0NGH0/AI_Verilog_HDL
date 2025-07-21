@@ -127,12 +127,16 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE
-    IDLE --> IDLE: btnD (circle animation speed control)
-    IDLE --> MINSEC_WATCH: btnR
-    MINSEC_WATCH --> STOPWATCH: btnR
-    STOPWATCH --> IDLE: btnR
-    STOPWATCH --> STOPWATCH: btnC (start/pause toggle)
-    STOPWATCH --> STOPWATCH: btnU (reset stopwatch time)
+    IDLE --> IDLE: btnD pressed (circle animation speed control)
+    IDLE --> MINSEC_WATCH: btnR pressed
+    MINSEC_WATCH --> STOPWATCH: btnR pressed
+    STOPWATCH --> IDLE: btnR pressed
+    STOPWATCH --> PAUSED: btnC pressed (pause)
+    PAUSED --> STOPWATCH: btnC pressed (resume)
+    STOPWATCH --> STOPWATCH: tick_1Hz (count up)
+    PAUSED --> PAUSED: no button
+    STOPWATCH --> RESET: btnU pressed (reset time)
+    RESET --> STOPWATCH
 ```
 
 ---
