@@ -26,7 +26,7 @@ module top(
     /* BTN WIRE */
     /* BTN[0] : L, BTN[1] : C, BTN[2] : R, BTN[3] : U, BTN[4] : D */
     wire [4:0] w_btn_debounce; 
-    
+    wire buzzer_btn;
     /* FND WIRE */
 
     // 수동 온도 설정 모듈
@@ -69,6 +69,7 @@ module top(
     /* BUZZER WIRE */
     wire w_buzzer_ultra;
     wire w_buzzer_mw;
+    wire w_buzzer_sw;
 
     /* command controller wire */
     wire [4:0] w_mode_enable;
@@ -305,7 +306,7 @@ module top(
 
     hvac_pwm_dcmotor u_dc_motor (
         .clk(clk),
-        .enable(motor_enable),
+        .enable(motor_enable | !(w_mode_enable[1] | w_mode_enable[2])),
         .measured_temp(w_dht11_temp),
         .target_temp(w_temp_applied),
         .manual_mode(w_mode_enable[2]),
@@ -334,9 +335,12 @@ module top(
         .reset(reset),
         .sw_enable(w_mode_enable[4]),
         .btn({w_btn_debounce[4],w_btn_debounce[3],w_btn_debounce[1],w_btn_debounce[2]}), /* BTN[0] : R, BTN[1] : C, BTN[2] : U, BTN[3] : D */
+        .buzzer_sw(w_buzzer_sw),
         .an(w_an_sw),
         .seg(w_seg_data_sw)
     );
+    
+    assign buzzer_btn = w_btn_debounce[0] | w_btn_debounce[1] | w_btn_debounce[2] | w_btn_debounce[3] | w_btn_debounce[4]; 
 
     assign seg = w_mode_enable[4] ? w_seg_data_sw     :
                  w_mode_enable[3] ? w_seg_data_mw     :
@@ -352,11 +356,11 @@ module top(
                                     4'b0000;
     
     assign led = w_mode_enable;
-    assign buzzer = w_mode_enable[4] ? NO_BUZZER      :   
+    assign buzzer = w_mode_enable[4] ? w_buzzer_sw    :   
                     w_mode_enable[3] ? w_buzzer_mw    :
-                    w_mode_enable[2] ? w_buzzer_ultra :  
-                    w_mode_enable[1] ? w_buzzer_ultra :
-                    w_mode_enable[0] ? NO_BUZZER      : NO_BUZZER;                    
+                    w_mode_enable[2] ? w_buzzer_ultra | buzzer_btn :  
+                    w_mode_enable[1] ? w_buzzer_ultra | buzzer_btn :
+                    w_mode_enable[0] ? NO_BUZZER | buzzer_btn : NO_BUZZER;                    
 
     
 endmodule

@@ -5,6 +5,7 @@ module minsec_stopwatch(
     input reset,
     input sw_enable,
     input [3:0] btn, /* BTN[0] : R, BTN[1] : C, BTN[2] : U, BTN[3] : D */
+    output buzzer_sw,
     output [3:0] an,
     output [7:0] seg
     );
@@ -30,5 +31,7 @@ module minsec_stopwatch(
         .an(an),
         .seg(seg)
     );
+
+    assign buzzer_sw = btn[0] | btn[1] | btn[2] | btn[3];
 
 endmodule

@@ -17,7 +17,7 @@ module hvac_pwm_dcmotor (
 
     // 방향: 항상 정회전
     always @(posedge clk) begin
-        in1_in2 <= 2'b10;
+        in1_in2 <= 2'b01;
     end
 
     // 온도 비교에 따라 duty cycle 결정
