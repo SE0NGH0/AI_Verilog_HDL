@@ -58,7 +58,7 @@ module uart_rx(
 
             START_BIT : begin
                 if(r_baud_tick) begin
-                    if(r_baud_tick_cnt == 7) begin // 의문 ++하면 7인가 8인가 
+                    if(r_baud_tick_cnt == 7) begin 
                         r_state         <= DATA_BITS;
                         r_bit_cnt       <= 4'd0;
                         r_baud_tick_cnt <= 4'd0;

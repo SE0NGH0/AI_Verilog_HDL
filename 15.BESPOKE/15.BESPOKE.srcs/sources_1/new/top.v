@@ -112,6 +112,8 @@ module top(
         .clk(clk),
         .reset(reset),  // SW15
         .btnL(w_btn_debounce[0]),       // Mode 변경 버튼
+        .rx_done(w_rx_done),
+        .rx_data(w_rx_data),
         .mode_enable(w_mode_enable) // 각 모드의 enable 신호    
     );
 
@@ -156,6 +158,14 @@ module top(
 
     /* BTN[0] : L, BTN[1] : C, BTN[2] : R, BTN[3] : U, BTN[4] : D */
 
+    uart_rx u_uart_rx(
+        .clk(clk),
+        .reset(reset),
+        .rx(RsRx),
+        .data_out(w_rx_data),
+        .rx_done(w_rx_done)
+    );
+
     /* 공조기 수동모드 */
     manual_temp_controller u_temp_manual_ctrl (
         .clk(clk),
@@ -163,6 +173,8 @@ module top(
         .man_enable(w_mode_enable[2]),
         .btn_inc(w_btn_debounce[3]),
         .btn_dec(w_btn_debounce[4]),
+        .rx_done(w_rx_done),
+        .rx_data(w_rx_data),
         .temp_manual(w_temp_manual),
         .temp_applied(w_temp_applied)
     );
@@ -187,7 +199,7 @@ module top(
         .done(w_ultra_done),
         .latched_distance(w_latched_distance)
     );
-
+    
     /* === Ultrasonic UART === */
     wire tx_start_ultra;
     wire [7:0] tx_data_ultra;
@@ -306,7 +318,7 @@ module top(
 
     hvac_pwm_dcmotor u_dc_motor (
         .clk(clk),
-        .enable(motor_enable | !(w_mode_enable[1] | w_mode_enable[2])),
+        .enable(motor_enable & (w_mode_enable[1] | w_mode_enable[2])),
         .measured_temp(w_dht11_temp),
         .target_temp(w_temp_applied),
         .manual_mode(w_mode_enable[2]),
