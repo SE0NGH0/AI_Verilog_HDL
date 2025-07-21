@@ -121,17 +121,17 @@ stateDiagram-v2
     DOOR_CLOSE --> IDLE
 ```
 
-### ⏱ 스톱워치 FSM
+### ⏱ 분초시계 / 스톱워치 FSM
 
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE
-    IDLE --> IDLE: btnD pressed (circle animation speed control)
-    IDLE --> MINSEC_WATCH: btnR pressed
-    MINSEC_WATCH --> STOPWATCH: btnR pressed
-    STOPWATCH --> IDLE: btnR pressed
-    STOPWATCH --> STOPWATCH: btnC pressed (start/pause toggle)
-    STOPWATCH --> IDLE: btnU pressed (reset)
+    IDLE --> IDLE: btnD (circle animation speed control)
+    IDLE --> MINSEC_WATCH: btnR
+    MINSEC_WATCH --> STOPWATCH: btnR
+    STOPWATCH --> IDLE: btnR
+    STOPWATCH --> STOPWATCH: btnC (start/pause toggle)
+    STOPWATCH --> STOPWATCH: btnU (reset stopwatch time)
 ```
 
 ---
