@@ -94,18 +94,16 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE
-    IDLE --> Temp/Humi: btnL (mode change)
-    Temp/Humi --> READ_DISTANCE: tick_1Hz
-    Temp/Humi --> READ_TEMPERATURE: tick_1Hz
+    IDLE --> AUTO_CONTROL: btnL (mode change) / sw[1] == 0
+    AUTO_CONTROL --> READ_DISTANCE: tick_1Hz
+    AUTO_CONTROL --> READ_TEMPERATURE: tick_1Hz
     READ_DISTANCE --> DISABLE_MOTOR: distance <= 5cm
     READ_DISTANCE --> SET_PWM: distance > 5cm
     READ_TEMPERATURE --> EVALUATE_TEMP
     EVALUATE_TEMP --> MANUAL_CONTROL: btnL (mode change) / sw[1] == 1
     MANUAL_CONTROL --> APPLY_TARGET_TEMP: btnU(Temp↑) / btnD(Temp↓)
     APPLY_TARGET_TEMP --> SET_PWM: temp_applied 기준 제어
-    EVALUATE_TEMP --> AUTO_CONTROL: sw[1] == 0
     AUTO_CONTROL --> SET_PWM: 측정된 온도 기준 자동 제어
-    SET_PWM --> Temp/Humi
     DISABLE_MOTOR --> SET_PWM
 ```
 
