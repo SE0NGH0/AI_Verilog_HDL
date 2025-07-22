@@ -196,6 +196,15 @@ stateDiagram-v2
 
 ---
 
+## 📽️ 시연 영상
+
+| 영상 종류 | 링크 |
+|----------|------|
+| 📦 전체 동작 영상 | [동작 영상 보러가기](https://youtube.com/shorts/1sJZ1K1JNUI) |
+| 📡 UART 통신 영상 | [comportmaster 출력 영상](https://youtube.com/shorts/0ijM9RrLEJM) |
+
+---
+
 ## 💬 사용법
 
 1. Vivado로 프로젝트 열기 (`15.BESPOKE.xpr`)
@@ -238,14 +247,5 @@ stateDiagram-v2
 ## ✍️ 참고 및 기여
 
 이 프로젝트는 임베디드 시스템, 센서 통합, 하드웨어 제어, UART 통신 등 실전 회로 설계 능력을 종합적으로 훈련하기 위해 설계되었습니다.
-
----
-
-## 📽️ 시연 영상
-
-| 영상 종류 | 링크 |
-|----------|------|
-| 📦 전체 동작 영상 | [동작 영상 보러가기](https://youtube.com/shorts/1sJZ1K1JNUI) |
-| 📡 UART 통신 영상 | [comportmaster 출력 영상](https://youtube.com/shorts/0ijM9RrLEJM) |
 
 ---
