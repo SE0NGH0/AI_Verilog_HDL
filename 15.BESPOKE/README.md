@@ -134,6 +134,68 @@ stateDiagram-v2
     STOPWATCH --> STOPWATCH: btnU (reset time)
 ```
 
+## 🧩 상세 구현 기능 정리
+
+압축파일 내 Verilog 소스 기준으로 구현된 각 기능은 다음과 같습니다:
+
+### ✅ 센서 및 입력 처리
+
+| 파일명 | 기능 설명 |
+|--------|----------|
+| `hcsr04.v` | HC-SR04 초음파 센서 구동 및 거리 측정 |
+| `dht11.v` / `dht11_controller.v` | DHT11 온습도 센서 통신 FSM |
+| `manual_temp_controller.v` | 스위치 기반 수동 온도 설정 FSM |
+| `button_debounce.v` | 버튼 디바운싱 회로 구현 (노이즈 방지) |
+
+### ✅ DC 모터 / HVAC 제어
+
+| 파일명 | 기능 설명 |
+|--------|----------|
+| `hvac_pwm_dcmotor.v` | 자동/수동 온도에 따라 DC 모터 PWM 제어 |
+| `pwm_dcmotor.v`, `pwm_duty_cycle_control.v` | 일반 DC 모터 제어용 PWM 회로 |
+
+### ✅ 전자레인지 시스템
+
+| 파일명 | 기능 설명 |
+|--------|----------|
+| `microwave.v` | 전체 전자레인지 시스템 통합 |
+| `mw_controller.v`, `mw_fsm_controller.v` | 조리 상태 FSM 제어 |
+| `mw_servo_motor.v` | 서보 모터로 문 여닫기 |
+| `mw_time_controller.v` | 조리 시간 설정 및 카운트 |
+
+### ✅ 디스플레이 및 시각 출력
+
+| 파일명 | 기능 설명 |
+|--------|----------|
+| `fnd_controller.v`, `fnd_controller_2.v` | 7-세그먼트 디스플레이 제어 |
+| `idle_fnd.v` | IDLE 모드 애니메이션 출력 |
+| `sw_fnd_controller.v`, `dht11_fnd_controller.v` | 스톱워치 및 온습도 값 디스플레이 |
+
+### ✅ 스톱워치 / 타이머
+
+| 파일명 | 기능 설명 |
+|--------|----------|
+| `minsec_stopwatch.v` | 분/초 단위 스톱워치 카운트 FSM |
+| `sw_controller.v` | 스톱워치 모드 전환 및 동작 FSM |
+
+### ✅ 부저 제어
+
+| 파일명 | 기능 설명 |
+|--------|----------|
+| `buzzer_top.v` | 전체 부저 시스템 통합 |
+| `power_on_buzzer.v`, `open_buzzer.v` | 버튼 기반 부저 제어 |
+| `ultra_buzzer_controller.v` | 거리 경보용 부저 제어 FSM |
+
+### ✅ UART 통신
+
+| 파일명 | 기능 설명 |
+|--------|----------|
+| `uart_tx.v`, `uart_rx.v` | 송수신 회로 |
+| `uart_controller.v` | 전체 UART 통신 제어 |
+| `data_sender.v`, `dht11_data_sender.v` | UART 전송 포맷 관리 |
+
+---
+
 ## 📽️ 시연 영상
 
 | 영상 종류 | 링크 |
@@ -185,3 +247,4 @@ stateDiagram-v2
 ## ✍️ 참고 및 기여
 
 이 프로젝트는 임베디드 시스템, 센서 통합, 하드웨어 제어, UART 통신 등 실전 회로 설계 능력을 종합적으로 훈련하기 위해 설계되었습니다.
+---
