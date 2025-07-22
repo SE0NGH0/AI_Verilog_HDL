@@ -134,6 +134,13 @@ stateDiagram-v2
     STOPWATCH --> STOPWATCH: btnU (reset time)
 ```
 
+## 📽️ 시연 영상
+
+| 영상 종류 | 링크 |
+|----------|------|
+| 📦 전체 동작 영상 | [동작 영상 보러가기](https://youtube.com/shorts/1sJZ1K1JNUI) |
+| 📡 UART 통신 영상 | [comportmaster 출력 영상](https://youtube.com/shorts/0ijM9RrLEJM) |
+
 ---
 
 ## 💬 사용법
